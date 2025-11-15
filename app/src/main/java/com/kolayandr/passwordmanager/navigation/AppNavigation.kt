@@ -1,14 +1,14 @@
-package com.kolayandr.passwordmanager.ui.thenee
+package com.kolayandr.passwordmanager.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
-import com.kolayandr.passwordmanager.navigation.Screen
+import com.kolayandr.passwordmanager.AuthScreen
+import com.kolayandr.passwordmanager.PasswordDetailScreen
+import com.kolayandr.passwordmanager.PasswordListScreen
 import kotlin.reflect.typeOf
 
 @Composable

@@ -1,4 +1,4 @@
-package com.kolayandr.passwordmanager.ui.thenee
+package com.kolayandr.passwordmanager
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
