@@ -8,6 +8,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
 /** Controller that exposes a Flow of [SnackbarEvent] and allows posting events. */
 class SnackbarController(private val scope: CoroutineScope) {
@@ -40,7 +41,7 @@ class SnackbarController(private val scope: CoroutineScope) {
     fun start(show: suspend (String) -> Unit) {
         // Backwards compatibility: consume events as plain messages
         scope.launch {
-            for (evt in events) {
+            events.collect { evt ->
                 try {
                     show(evt.message)
                 } catch (e: CancellationException) {
