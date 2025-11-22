@@ -29,10 +29,17 @@ import com.kolayandr.passwordmanager.ui.snackbar.models.SnackbarEvent
 import com.kolayandr.passwordmanager.ui.theme.PasswordManagerTheme
 import kotlinx.coroutines.launch
 import com.kolayandr.passwordmanager.ui.snackbar.CollectSnackbarEventOnLifecycle
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.kolayandr.passwordmanager.navigation.AppNavigation
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         enableEdgeToEdge()
         val snackbarController = SnackbarController(lifecycleScope)
 
@@ -89,5 +96,17 @@ fun DemoSnackbarButtons(controller: SnackbarController) {
 fun GreetingPreview() {
     PasswordManagerTheme {
         Greeting("Android")
+    }
+
+        setContent {
+            val navController = rememberNavController()
+            MaterialTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    AppNavigation(navController)
+                }
+            }
+        }
     }
 }
