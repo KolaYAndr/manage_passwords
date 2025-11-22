@@ -14,13 +14,21 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.collect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.kolayandr.passwordmanager.ui.snackbar.SnackbarController
+import com.kolayandr.passwordmanager.ui.snackbar.models.SnackbarEvent
 import com.kolayandr.passwordmanager.ui.theme.PasswordManagerTheme
 import kotlinx.coroutines.launch
+import com.kolayandr.passwordmanager.ui.snackbar.CollectSnackbarEventOnLifecycle
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,12 +40,7 @@ class MainActivity : ComponentActivity() {
             PasswordManagerTheme {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                LaunchedEffect(snackbarHostState) {
-                    // start delivering queued messages to the Scaffold's SnackbarHostState
-                    snackbarController.start { message ->
-                        snackbarHostState.showSnackbar(message)
-                    }
-                }
+                CollectSnackbarEventOnLifecycle(controller = snackbarController, snackbarHostState = snackbarHostState)
 
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -72,9 +75,9 @@ fun DemoSnackbarButtons(controller: SnackbarController) {
         }
         Button(onClick = {
             // enqueue several messages quickly to demonstrate queuing
-            controller.showMessage("Error adding item")
-            controller.showMessage("Failed authorization")
-            controller.showMessage("Another notification")
+            controller.postEvent(SnackbarEvent("Error adding item"))
+            controller.postEvent(SnackbarEvent("Failed authorization"))
+            controller.postEvent(SnackbarEvent("Another notification"))
         }) {
             Text("Enqueue 3 messages")
         }
