@@ -40,7 +40,7 @@ class SnackbarController(private val scope: CoroutineScope) {
     fun start(show: suspend (String) -> Unit) {
         // Backwards compatibility: consume events as plain messages
         scope.launch {
-            for (evt in events) {
+            events.collect { evt ->
                 try {
                     show(evt.message)
                 } catch (e: CancellationException) {
