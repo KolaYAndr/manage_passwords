@@ -6,9 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.kolayandr.passwordmanager.AuthScreen
-import com.kolayandr.passwordmanager.PasswordDetailScreen
-import com.kolayandr.passwordmanager.PasswordListScreen
+import com.kolayandr.passwordmanager.ui.detail.PasswordDetailScreen
 import kotlin.reflect.typeOf
 
 @Composable
@@ -20,26 +18,25 @@ fun AppNavigation(
         startDestination = Screen.Auth
     ) {
         composable<Screen.Auth> {
-            AuthScreen(
-                onAuthSuccess = { navHostController.navigate(Screen.PasswordList) }
-            )
         }
+
         composable<Screen.PasswordList> {
-            PasswordListScreen(
-                onPasswordClick = { passwordId ->
-                    navHostController.navigate(Screen.PasswordDetail(passwordId))
-                },
-                onLogout = { navHostController.navigate(Screen.Auth) }
-            )
         }
+
         composable<Screen.PasswordDetail>(
             typeMap = mapOf(typeOf<Screen.PasswordDetail>() to NavType.StringType),
         ) { backstack ->
             val id = backstack.toRoute<Screen.PasswordDetail>().passwordId
             PasswordDetailScreen(
                 passwordId = id,
-                onSave = {},
-                onBack = { navHostController.navigate(Screen.PasswordList) }
+                onSave = {
+                    // Возвращаемся на предыдущий экран (список)
+                    navHostController.popBackStack()
+                },
+                onBack = {
+                    // Возвращаемся на предыдущий экран (список)
+                    navHostController.popBackStack()
+                }
             )
         }
     }
