@@ -1,10 +1,11 @@
-package com.kolayandr.passwordmanager.data
+package com.kolayandr.passwordmanager.data.database
 
 import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import java.net.PasswordAuthentication
+import com.kolayandr.passwordmanager.data.dao.PasswordsDao
+import com.kolayandr.passwordmanager.data.models.PasswordDbModel
 
 @Database(entities = [PasswordDbModel::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
@@ -17,16 +18,15 @@ abstract class AppDatabase : RoomDatabase() {
         private var INSTANCE: AppDatabase? = null
 
         fun getInstance(application: Application): AppDatabase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    application,
+                    AppDatabase::class.java,
+                    NAME_DB
+                ).build()
+                INSTANCE = instance
+                instance
             }
-            val instance = Room.databaseBuilder(
-                application,
-                AppDatabase::class.java, NAME_DB
-            ).build()
-            INSTANCE = instance
-            return instance
         }
     }
 }

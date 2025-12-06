@@ -1,4 +1,4 @@
-package com.kolayandr.passwordmanager.data
+package com.kolayandr.passwordmanager.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,5 +9,5 @@ data class PasswordDbModel(
     var id: Long = 0L,
     val username: String,
     val encryptedPassword: String,
-    val website: String
+    var serviceName: String?
 )
